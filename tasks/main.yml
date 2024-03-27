@@ -1,20 +1,13 @@
 ---
 # tasks file for ansible-role-postgre-install
-- name: Configure PostgreSQL to accept external connections
-  block:
-    - name: Set listen_addresses in postgresql.conf
-      lineinfile:
-        path: "{{ postgresql_data_directory }}/postgresql.conf"
-        regexp: '^#?listen_addresses =.*$'
-        line: "listen_addresses = '*'"
-      notify:
-        - restart postgresql
+- name: Copy postgresql.conf from role to remote machine
+  copy:
+    src: postgresql.conf
+    dest: "{{ postgresql_data_directory }}/postgresql.conf"
+  tags: copy_postgresql_conf
 
-    - name: Add host access in pg_hba.conf
-      lineinfile:
-        path: "{{ postgresql_data_directory }}/pg_hba.conf"
-        line: "host    all             all             0.0.0.0/0               trust"
-      notify:
-        - restart postgresql
-
-  tags: configure_postgresql
+- name: Copy pg_hba.conf from role to remote machine
+  copy:
+    src: pg_hba.conf
+    dest: "{{ postgresql_data_directory }}/pg_hba.conf"
+  tags: copy_pg_hba_conf
