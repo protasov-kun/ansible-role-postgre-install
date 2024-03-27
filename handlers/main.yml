@@ -1,0 +1,6 @@
+---
+# handlers file for ansible-role-postgre-install
+- name: restart postgresql
+  service:
+    name: postgresql
+    state: restarted

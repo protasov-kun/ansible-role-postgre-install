@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-role-postgre-install
+# Настройки по умолчанию для PostgreSQL
+postgresql_port: 5432
+postgresql_data_directory: /var/lib/postgresql/12/main
