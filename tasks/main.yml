@@ -4,10 +4,18 @@
   copy:
     src: postgresql.conf
     dest: "{{ postgresql_data_directory }}/postgresql.conf"
-  tags: copy_postgresql_conf
+  tags: 
+    - copy_postgresql_conf
 
 - name: Copy pg_hba.conf from role to remote machine
   copy:
     src: pg_hba.conf
     dest: "{{ postgresql_data_directory }}/pg_hba.conf"
-  tags: copy_pg_hba_conf
+  tags: 
+    - copy_pg_hba_conf
+
+# Handlers
+- name: restart postgresql
+  service:
+    name: postgresql
+    state: restarted
