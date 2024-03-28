@@ -3,14 +3,12 @@
 
 # Задачи для установки PostgreSQL
 - name: Install PostgreSQL
-  become: true
   package:
     name: postgresql
     state: present
 
 # Копирование конфигурационных файлов PostgreSQL
 - name: Copy postgresql.conf from role to remote machine
-  become: true
   copy:
     src: postgresql.conf
     dest: "{{ postgresql_data_directory }}/postgresql.conf"
@@ -18,7 +16,6 @@
     - copy_postgresql_conf
 
 - name: Copy pg_hba.conf from role to remote machine
-  become: true
   copy:
     src: pg_hba.conf
     dest: "{{ postgresql_data_directory }}/pg_hba.conf"
@@ -27,20 +24,10 @@
 
 # Handlers
 - name: restart postgresql
-  become: true
   service:
     name: postgresql
     state: restarted
 
-
-- name: Check PostgreSQL connectivity
-  become: true
-  become_user: postgres
-  shell: psql -U postgres -c "SELECT 1;"
-  register: postgresql_check_result
-  
-- debug:
-    msg: "PostgreSQL is {{ 'not ' if postgresql_check_result.rc != 0 else '' }}running."
 
 - name: Check PostgreSQL connectivity
   become_user: postgres
