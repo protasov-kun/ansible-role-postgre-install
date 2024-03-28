@@ -1,5 +1,10 @@
 ---
 # tasks file for ansible-role-postgre-install
+- name: Install PostgreSQL
+  package:
+    name: postgresql
+    state: present
+
 - name: Copy postgresql.conf from role to remote machine
   copy:
     src: postgresql.conf
