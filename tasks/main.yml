@@ -1,14 +1,12 @@
 ---
 # tasks file for ansible-role-postgre-install
 
-# Задачи для установки PostgreSQL
 - name: Install PostgreSQL
   become: true
   package:
     name: postgresql
     state: present
 
-# Копирование конфигурационных файлов PostgreSQL
 - name: Copy postgresql.conf from role to remote machine
   become: true
   copy:
@@ -27,7 +25,14 @@
 
 # Handlers
 - name: restart postgresql
-  become: true  
+  become: true
   service:
     name: postgresql
     state: restarted
+
+- name: Check PostgreSQL connectivity
+  shell: psql -U postgres -c "SELECT 1;"
+  register: postgresql_check_result
+
+- debug:
+    msg: "PostgreSQL is {{ 'not ' if postgresql_check_result.rc != 0 else '' }}running."
